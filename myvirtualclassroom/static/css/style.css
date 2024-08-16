@@ -1,0 +1,30 @@
+/* static/css/style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+    line-height: 1.6;
+}
+
+h2 {
+    color: #444;
+}
+
+ul {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0;
+}
+
+li a {
+    text-decoration: none;
+    color: #0056b3;
+    display: block;
+    padding: 8px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+li a:hover {
+    background-color: #f0f0f0;
+}

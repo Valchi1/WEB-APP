@@ -1,0 +1,16 @@
+<!-- courses/templates/courses/all_courses.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>All Courses</h2>
+  <div class="course-list">
+    {% for course in object_list %}
+      <div class="course-item">
+        <a href="{% url 'view_course' pk=course.pk %}" class="course-title-link">{{ course.title }}</a>
+        {% if request.user.is_superuser %}
+          <a href="{% url 'course_content_upload' course_id=course.pk %}" class="btn upload-button">Upload Content</a>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

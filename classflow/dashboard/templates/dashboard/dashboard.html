@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Welcome to Your Dashboard, {{ user.get_full_name }}</h1>
+
+  {% if role == 'Admin' %}
+    <div class="course-list admin-courses">
+      <a href="{% url 'all_courses' %}" class="btn course-button">View All Courses</a>
+      <!-- Add other admin-specific links here -->
+    </div>
+    {% elif role == 'Teacher' %}
+    <div class="course-list teacher-courses">
+        <p> YOUR MODULES  <p>
+      {% for course in courses %}
+        <div class="course-item">
+          <a href="{% url 'view_course' pk=course.pk %}" class="course-title-link">{{ course.title }} </a>
+          <a href="{% url 'course_content_upload' course_id=course.pk %}" class="btn upload-button">Upload Content</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif role == 'Student' %}
+    <div class="course-list student-courses">
+        <p> YOUR MODULES  <p>
+      {% for course in courses %}
+        <div class="course-item">
+          <a href="{% url 'view_course' pk=course.pk %}" class="course-title-link">{{ course.title }}</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Classflow{% endblock %}</title>
+    {% block extra_head %}
+    <!-- Place to add extra head elements in child templates -->
+    {% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="main-header">
+        {% block user_profile %}
+        <div class="user-profile">
+            <!-- Assuming you have an 'images' directory inside 'static' and a 'user_profile_icon.png' inside it -->
+            <img src="{% static 'images/profile_icon.webp' %}" alt="User Profile" class="user-profile-icon">
+        </div>
+        {% endblock user_profile %}
+        <div class="logo">
+            <img src="{% static 'images/logo.webp' %}" alt="Classflow Logo">
+        </div>
+        <nav>
+            <ul>
+                {% if request.user.is_authenticated %}
+                {% if not request.resolver_match.url_name == 'dashboard' %}
+                    <li><a href="{% url 'dashboard' %}"class="btn">Dashboard</a></li>
+                    {% endif %}
+                    <li>
+                        <form action="{% url 'logout' %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                {% if not request.resolver_match.url_name == 'login' %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <div class="main-content">
+        {% block content %}
+        <!-- This is where the content from child templates will appear -->
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Login - My Virtual Classroom{% endblock %}</title>
+</head>
+<body>
+    {% if not user.is_authenticated %}
+    <main>
+        {% block content %}
+        <!-- Login form will be here -->
+        {% endblock %}
+    </main>
+    {% else %}
+    <p>You are already logged in.</p>
+
+    {% endif %}
+</body>
+</html>

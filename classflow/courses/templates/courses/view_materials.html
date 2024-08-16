@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ course.title }}</h1>
+  <p>{{ course.description }}</p>
+  
+  <!-- Display the number of materials -->
+  <p>Number of Materials: {{ materials|length }}</p>
+  
+  <!-- List all materials and provide a delete link for teachers and admins -->
+  <h2>Course Materials</h2>
+  <div class="course-materials">
+    {% for content in materials %}
+      <div class="course-material-item">
+        <h3>{{ content.title }}</h3>
+        <div class="material-actions">
+          <a href="{{ content.file.url }}" class="action-button">Download Material</a>
+          
+          <!-- Display delete option for superusers directly -->
+          {% if request.user.is_superuser %}
+            <a href="{% url 'delete_course_content' pk=content.pk %}" class="action-button">Delete</a>
+            <a href="{% url 'edit_course_content' pk=content.pk %}" class="action-button">Edit</a>
+          {% else %}
+            <!-- Check for specific groups and display delete option accordingly -->
+            {% for group in request.user.groups.all %}
+              {% if group.name == "Academic staff" or group.name == "Administrators" %}
+                <a href="{% url 'delete_course_content' pk=content.pk %}" class="action-button">Delete</a>
+                <a href="{% url 'edit_course_content' pk=content.pk %}" class="action-button">Edit</a>
+                <!-- As Django templates cannot use 'break', this loop checks all groups -->
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p>No materials uploaded for this course yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

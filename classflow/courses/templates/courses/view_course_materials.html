@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ course.title }}</h1>
+  <p>{{ course.description }}</p>
+  
+  <!-- Display course materials -->
+  <h2>Course Materials</h2>
+  {% for content in contents %}
+    <div>
+      <h3>{{ content.title }}</h3>
+      <!-- Ensure you have a 'file' field in your CourseContent model -->
+      <a href="{{ content.file.url }}">Download Material</a>
+    </div>
+  {% empty %}
+    <p>No materials uploaded for this course yet.</p>
+  {% endfor %}
+  
+  <!-- Link for teachers to upload new content, shown only to them -->
+  {% if request.user.groups.filter(name='Academic staff').exists or request.user.is_superuser %}
+    <a href="{% url 'course_content_upload' course.id %}">Upload New Content</a>
+  {% endif %}
+{% endblock %}

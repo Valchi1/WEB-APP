@@ -1,0 +1,73 @@
+{% extends 'two_factor/_base.html' %}
+
+{% block user_profile %}
+  <!-- Empty block to hide the user profile icon on the login page -->
+{% endblock user_profile %}
+
+{% block header_title %}Classflow{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">
+        <h2>Login to Classflow</h2>
+
+        <!-- reCAPTCHA section -->
+        <div class="captcha-container">
+            <label for="id_captcha">reCAPTCHA:</label>
+            <div class="g-recaptcha" data-sitekey="6LcvQ70pAAAAAPvTZypQTW3qe4U9Llxgi59wLp73"></div>
+        </div>
+
+        <!-- Form Wizard -->
+        <form method="post" action=".">
+            {% csrf_token %}
+            {{ wizard.management_form }}  <!-- Include management form data -->
+            {% if wizard.steps.current == 'auth' %}
+                {{ wizard.form.as_p }}
+            {% elif wizard.steps.current == 'token' %}
+                <p>Please enter your two-factor authentication code:</p>
+                {{ wizard.form.as_p }}
+            {% elif wizard.steps.current == 'backup' %}
+                {{ wizard.form.as_p }}
+            {% endif %}
+            <button type="submit">Log in</button>
+            <p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+        </form>
+    </div>
+</div>
+
+<!-- Include reCAPTCHA JavaScript -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!-- JavaScript for reCAPTCHA validation -->
+<script type="text/javascript">
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent the form from submitting immediately
+
+        // Get the reCAPTCHA response
+        var recaptchaResponse = grecaptcha.getResponse();
+
+        // Get the CSRF token
+        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        // Send the reCAPTCHA response and CSRF token to the validation view
+        fetch('/validate_recaptcha/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken  // Include the CSRF token in the headers
+            },
+            body: 'g-recaptcha-response=' + recaptchaResponse
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Proceed with form submission if reCAPTCHA is valid
+                document.querySelector('form').submit();
+            } else {
+                // Show error message or handle invalid reCAPTCHA response
+                alert('Error: ' + data.error_message);
+            }
+        });
+    });
+</script>
+{% endblock %}

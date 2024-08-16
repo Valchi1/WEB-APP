@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome to My Virtual Classroom</h1>
+<div>
+    <h2>Available Courses</h2>
+    {% for course in courses %}
+    <div>
+        <h3>{{ course.title }}</h3>
+        <p>{{ course.description }}</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'enroll_course' course.id %}">Enroll</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

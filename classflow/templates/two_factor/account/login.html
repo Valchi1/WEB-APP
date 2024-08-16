@@ -1,0 +1,31 @@
+<!-- Custom Two-Factor Auth Login Template -->
+
+
+{% extends 'two_factor_base.html' %}
+
+{% block user_profile %}
+  <!-- Empty block to hide the user profile icon on the login page -->
+{% endblock user_profile %}
+
+{% block header_title %}Classflow{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">x
+        <h2>Login to Classflow</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            {% if wizard.steps.current == 'auth' %}
+                {{ wizard.form.as_p }}
+            {% elif wizard.steps.current == 'token' %}
+                <p>{{ device|as_verbose_action }}</p>
+                {{ wizard.form.as_p }}
+            {% elif wizard.steps.current == 'backup' %}
+                {{ wizard.form.as_p }}
+            {% endif %}
+            <button type="submit">Log in</button>
+            <p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}
