@@ -31,6 +31,6 @@ For more explanation, this is the link to the screencast
 Link to the screencast:
 https://share.vidyard.com/watch/ndLcow7MALZjfu78TH7r6n?
  
-This screencast does a little introduction and explains a bit about the code , the live system and how to run it, etc. This is not the official screencast.
+This screencast does a little introduction and explains a bit about the code , the live system and how to run it, etc. 
  
  
