@@ -5,7 +5,7 @@ Educational Web app for storing course materials.
 To run the web app
 
 Navigate to classflow, and make sure any of the virtual environments are activated (class or chi) , class is python 3.10 and chi is python 3.11
- I needed 3.10 to host the web app
+ I needed 3.10 to host the web app , or better still get all the requirements from the requirements.txt file in classflow
 
 Then to run use “python manage.py runserver_plus --cert-file /Users/valchi/SSL-TLSv1/certs/server.crt”
 
